@@ -43,6 +43,12 @@ We use Chef Zero - an in-memory Chef Server for running tests. It is automatical
 See [here](https://github.com/tdegrunt/vagrant-chef-server-bootstrap) for a
 quick way to get a testing chef server up.
 
+On windows, setting up guard and running it can be challenging. Try:
+
+    C:\berkshelf>bundle binstub guard
+    C:\berkshelf>start ruby.exe bin\guard start
+
+
 ### Debugging Issues
 By default, Berkshelf will only give you the top-level output from a failed command. If you're working deep inside the core, an error like:
 

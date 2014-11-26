@@ -26,3 +26,4 @@ rerun.txt
 .kitchen
 vendor/ruby
 .ruby-version
+/bin/guard
