@@ -48,6 +48,18 @@ On windows, setting up guard and running it can be challenging. Try:
     C:\berkshelf>bundle binstub guard
     C:\berkshelf>start ruby.exe bin\guard start
 
+To make the warning about colored output go away, git clone [ansicon](https://github.com/adoxa/ansicon), and build/install it.
+
+    Setting environment for using Microsoft Visual Studio 2010 x86 tools.
+    
+    C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC>pushd C:\ansicon
+    C:\ansicon>nmake /f makefile.vc BITS=32
+    ... build spew ...
+    C:\ansicon>pushd x86
+    C:\ansicon\x86>ansicon.exe -i
+    ANSICON: parent is 64-bit (use x64\ansicon).
+
+The build for x64 ansicon certainly runs, but installing it made my console consistently barf about missing the x86 ansicon dll.
 
 ### Debugging Issues
 By default, Berkshelf will only give you the top-level output from a failed command. If you're working deep inside the core, an error like:
