@@ -390,12 +390,22 @@ describe Berkshelf::Berksfile do
     let(:destination) { '/a/destination/path' }
     let(:excludes)    { { :exclude => ['**/metadata.rb'] + Berkshelf::Berksfile::EXCLUDED_VCS_FILES_WHEN_VENDORING } }
 
+    # On OS X ruby 2.1.4,
+    # the value of scratch from Dir.mktmpdir()
+    # yields an arbitrary timestamped dir like:
+    #   /var/folders/58/y5gnn5fs4dv44tn3n3rth9dc0000gn/T/d20141202-33181-ev87h7
+    # making this match os-dependant on the implementation of Dir.mktmpdir
+    if darwin?
+      let(:scratch_match) { /var\/folders/ }
+    else
+      let(:scratch_match) { /tmp/ }
+    end
+
     before do
       allow(Berkshelf::Installer).to receive(:new).and_return(installer)
     end
-
     it 'invokes FileSyncer with correct arguments' do
-      expect(Berkshelf::FileSyncer).to receive(:sync).with(/tmp/, destination, excludes)
+      expect(Berkshelf::FileSyncer).to receive(:sync).with(scratch_match, destination, excludes)
 
       subject.vendor(destination)
     end
