@@ -9,7 +9,7 @@ Manage a Cookbook or an Application's Cookbook dependencies
 
 ## Installation
 
-Berkshelf is now included as part of the [Chef-DK](http://getchef.com/downloads/chef-dk). This is fastest, easiest, and the recommended installation method for getting up and running with Berkshelf.
+Berkshelf is now included as part of the [Chef-DK](http://chef.io/downloads/chef-dk). This is fastest, easiest, and the recommended installation method for getting up and running with Berkshelf.
 
 > note: You may need to uninstall the Berkshelf gem especially if you are using a Ruby version manager you may need to uninstall all Berkshelf gems from each Ruby installation.
 
@@ -44,9 +44,6 @@ Ruby 1.9.1 and 1.9.2 are not officially supported. If you encounter problems, pl
 Berkshelf will search in specific locations for a configuration file. In order:
 
     $PWD/.berkshelf/config.json
-    $PWD/berkshelf/config.json
-    $PWD/berkshelf-config.json
-    $PWD/config.json
     ~/.berkshelf/config.json
 
 You are encouraged to keep project-specific configuration in the `$PWD/.berkshelf` directory. A default configuration file is generated for you, but you can update the values to suit your needs.

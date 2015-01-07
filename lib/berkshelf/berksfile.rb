@@ -27,7 +27,7 @@ module Berkshelf
       end
     end
 
-    DEFAULT_API_URL = "https://supermarket.getchef.com".freeze
+    DEFAULT_API_URL = "https://supermarket.chef.io".freeze
 
     # Don't vendor VCS files.
     # Reference GNU tar --exclude-vcs: https://www.gnu.org/software/tar/manual/html_section/tar_49.html
@@ -172,7 +172,7 @@ module Berkshelf
     # in a second source would not be used.
     #
     # @example
-    #   source "https://supermarket.getchef.com"
+    #   source "https://supermarket.chef.io"
     #   source "https://berks-api.riotgames.com"
     #
     # @param [String] api_url
@@ -208,7 +208,7 @@ module Berkshelf
       if args.first == :opscode
         Berkshelf.formatter.deprecation "Your Berksfile contains a site location pointing to the Opscode Community " +
           "Site (site :opscode). Site locations have been replaced by the source location. Change this to: " +
-          "'source \"https://supermarket.getchef.com\"' to remove this warning. For more information visit " +
+          "'source \"https://supermarket.chef.io\"' to remove this warning. For more information visit " +
           "https://github.com/berkshelf/berkshelf/wiki/deprecated-locations"
         source(DEFAULT_API_URL)
         return
@@ -448,7 +448,7 @@ module Berkshelf
     #     "nginx" => {
     #       "local" => #<Version 1.8.0>,
     #       "remote" => {
-    #         #<Source uri: "https://supermarket.getchef.com"> #=> #<Version 2.6.2>
+    #         #<Source uri: "https://supermarket.chef.io"> #=> #<Version 2.6.2>
     #       }
     #     }
     #   }
@@ -578,9 +578,10 @@ module Berkshelf
     # @return [String, nil]
     #   the expanded path cookbooks were vendored to or nil if nothing was vendored
     def vendor(destination)
-      Dir.mktmpdir do |scratch|
+      Dir.mktmpdir('vendor') do |scratch|
         chefignore       = nil
         cached_cookbooks = install
+        raw_metadata_files = []
 
         return nil if cached_cookbooks.empty?
 
@@ -600,6 +601,8 @@ module Berkshelf
             cookbook.compile_metadata(cookbook_destination)
           end
 
+          raw_metadata_files << File::join(cookbook.cookbook_name, 'metadata.rb')
+
           FileUtils.cp_r(files, cookbook_destination)
         end
 
@@ -618,7 +621,7 @@ module Berkshelf
         #
         #   * https://tickets.opscode.com/browse/CHEF-4811
         #   * https://tickets.opscode.com/browse/CHEF-4810
-        FileSyncer.sync(scratch, destination, exclude: ['**/metadata.rb'] + EXCLUDED_VCS_FILES_WHEN_VENDORING)
+        FileSyncer.sync(scratch, destination, exclude: raw_metadata_files + EXCLUDED_VCS_FILES_WHEN_VENDORING)
       end
 
       destination
